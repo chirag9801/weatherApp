@@ -10,32 +10,32 @@
     <div class="container">
       <div class="left-sec">
         <div class="day">
-          <h2>Friday</h2>
-          <p>20 october 2023</p>
+          <h2 class="dayname">Friday</h2>
+          <p class="date">20 october 2023</p>
           <div class="location">
             <ion-icon name="location-outline"></ion-icon>
-            <p>Mumbai, India</p>
+            <p class="city">Mumbai, India</p>
           </div>
         </div>
         <div class="temp">
-          <h1>30 &deg;C</h1>
+          <h1 class="temp1">30 &deg;C</h1>
           <ion-icon name="sunny"></ion-icon>
-          <p>sunny</p>
+          <p class="weather">sunny</p>
         </div>
       </div>
       <div class="rt-sec">
         <div class="data">
           <div class="data-elem">
             Precipitation
-            <p>10%</p>
+            <p class="precipitation">1%</p>
           </div>
           <div class="data-elem">
             Humidity
-            <p>56%</p>
+            <p class="humidity">56%</p>
           </div>
           <div class="data-elem">
             Wind
-            <p>19 km/hr</p>
+            <p class="wind">19 km/hr</p>
           </div>
         </div>
 
@@ -65,10 +65,11 @@
           </div>
         </div>
 
-        <button>
+        <button class="location-button">
           <ion-icon name="location-outline"></ion-icon>
-          Change location
+          <input type="text" class="location-input" placeholder="Change location" spellcheck="false">
         </button>
+        
       </div>
     </div>
 
@@ -80,5 +81,43 @@
       nomodule
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
+
+    <script>
+      const apiKey = "8aa520182a581483379353a029759177";
+      const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=Maharashtra";
+
+      async function checkWeather(){
+        const response = await fetch(apiUrl + `&appid=${apiKey}`);
+        var data = await response.json();
+
+        console.log(data)
+
+        document.querySelector('.city').innerHTML =data.name;
+        document.querySelector('.temp1').innerHTML =Math.round(data.main.temp) + "°C";
+        document.querySelector('.humidity').innerHTML =data.main.humidity + "%";
+        document.querySelector('.wind').innerHTML =data.wind.speed + "Km/h";
+        document.querySelector('.weather').innerHTML =data.weather[0].main;
+
+
+      }
+      checkWeather()
+
+
+      const currdate = new Date()
+      const year = currdate.getFullYear();
+      const monthname = currdate.toLocaleString('default',{month:"long"});
+      const day = String(currdate.getDate()).padStart(2,'0');
+      const formatDate = `${day} ${monthname} ${year}`;
+      console.log(formatDate)
+
+      const dayname= currdate.toLocaleString('en-IN', {weekday:'long'})
+      console.log(dayname)
+
+      document.querySelector('.date').innerHTML = formatDate;
+      document.querySelector('.dayname').innerHTML = dayname;
+
+
+    </script>
+
   </body>
 </html>
